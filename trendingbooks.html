@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Books</title>
+    <style>
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 800px;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: antiquewhite;
+            padding: 10px;
+        }
+        .star {
+            color: gold;
+            font-size: 20px;
+        }
+        .menu {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .menu a {
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+            margin: 0 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="Home">
+        <a href="main.html">Home</a>
+    </div>
+    <center>
+        <h1>Paling Banyak Dibaca</h1>
+    </center>
+    <center>
+        <table id="bookTable">
+            <tr>
+                <th>Cover Buku</th>
+                <th>Sinopsis Buku</th>
+                <th>Rating</th>
+            </tr>
+        </table>
+    </center>
+    <script>
+        // Array of book objects with ratings
+        var books = [
+            {
+                title: "Cantik Itu Luka",
+                synopsis: "Kisah Cantik Itu Luka berlatar belakang pada masa penjajahan dan mengisahkan kehidupan kompleks tokoh utama Dewi Ayu, seorang perempuan cantik dan eksotis. Dewi Ayu adalah seorang pelacur dengan paras yang rupawan. Ia dibesarkan oleh kakek neneknya setelah ayah dan ibunya diusir karena pernikahan sedarah.",
+                image: "img/cantik.jpg",
+                rating: 4
+            },
+            {
+                title: "Perahu Kertas",
+                synopsis: "Novel Perahu Kertas bertemakan persahabatan, percintaan, dan idealisme seseorang. Kisah ini berawal dengan seorang remaja laki-laki yang baru saja lulus dari Sekolah Menengah Akhir (SMA) bernama Keenan. Ia adalah laki-laki yang cerdas, mempunyai minat dan bakat dalam bidang seni melukis sangat kuat.",
+                image: "img/perahu.jpg",
+                rating: 5
+            },
+            {
+                title: "Matahari",
+                synopsis: "Cerita ini dibuka dengan suasana duka yang menyelimuti Raib, Seli, dan Ali atas tewasnya Ily saat pertarungan di klan Matahari (di novel sebelumnya). Para ksatria dari klan Bulan pun turut merasakan yang sama, hingga membuat Miss Selena tak dapat pulang ke klan Bumi.",
+                image: "img/matahari.jpg",
+                rating: 3
+            }
+        ];
+
+        // Function to generate star rating
+        function generateStars(rating) {
+            var stars = '';
+            for (var i = 0; i < 5; i++) {
+                if (i < rating) {
+                    stars += '<span class="star">&#9733;</span>';
+                } else {
+                    stars += '<span class="star">&#9734;</span>';
+                }
+            }
+            return stars;
+        }
+
+        // Function to generate book table rows
+        function generateBookTable() {
+            var table = document.getElementById('bookTable');
+            for (var i = 0; i < books.length; i++) {
+                var row = `<tr>
+                    <td><img src="${books[i].image}" style="width: 200px; height: 200px;"></td>
+                    <td>
+                        <p><strong>Judul:</strong> ${books[i].title}</p>
+                        <p><strong>Sinopsis:</strong> ${books[i].synopsis}</p>
+                    </td>
+                    <td>${generateStars(books[i].rating)}</td>
+                </tr>`;
+                table.innerHTML += row;
+            }
+        }
+
+        // Call the function to generate the table on page load
+        generateBookTable();
+    </script>
+</body>
+</html>

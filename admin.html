@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script>
+    // Redirect to login if not logged in as admin
+    if (localStorage.getItem("isLoggedIn") !== "true" || localStorage.getItem("userType") !== "admin") {
+      window.location.href = 'index.html';
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h1>Admin Dashboard</h1>
+    <button class="btn btn-danger mb-3" onclick="logout()">Logout</button>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="members-tab" data-bs-toggle="tab" data-bs-target="#members" type="button"
+          role="tab" aria-controls="members" aria-selected="true">Manage Members</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="books-tab" data-bs-toggle="tab" data-bs-target="#books" type="button"
+          role="tab" aria-controls="books" aria-selected="false">Manage Books</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="members" role="tabpanel" aria-labelledby="members-tab">
+        <h2>Members</h2>
+        <!-- CRUD operations for members -->
+        <button class="btn btn-success mb-3" onclick="showAddMemberModal()">Add Member</button>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="membersTableBody">
+            <!-- Members list will be populated here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="books" role="tabpanel" aria-labelledby="books-tab">
+        <h2>Books</h2>
+        <!-- CRUD operations for books -->
+        <button class="btn btn-success mb-3" onclick="showAddBookModal()">Add Book</button>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Description</th>
+              <th>Image</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="booksTableBody">
+            <!-- Books list will be populated here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Member Modal -->
+  <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addMemberModalLabel">Add Member</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="newMemberUsername" class="form-label">Username</label>
+            <input type="text" class="form-control" id="newMemberUsername">
+          </div>
+          <div class="mb-3">
+            <label for="newMemberPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="newMemberPassword">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="addMember()">Add Member</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Member Modal -->
+  <div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editMemberModalLabel">Edit Member</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="editMemberUsername" class="form-label">Username</label>
+            <input type="text" class="form-control" id="editMemberUsername">
+          </div>
+          <div class="mb-3">
+            <label for="editMemberPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="editMemberPassword">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="updateMember()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Book Modal -->
+  <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addBookModalLabel">Add Book</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="newBookTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="newBookTitle">
+          </div>
+          <div class="mb-3">
+            <label for="newBookAuthor" class="form-label">Author</label>
+            <input type="text" class="form-control" id="newBookAuthor">
+          </div>
+          <div class="mb-3">
+            <label for="newBookDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="newBookDescription"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="newBookImage" class="form-label">Book Image</label>
+            <input type="file" class="form-control" id="newBookImage">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="addBook()">Add Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Book Modal -->
+  <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editBookModalLabel">Edit Book</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="editBookTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="editBookTitle">
+          </div>
+          <div class="mb-3">
+            <label for="editBookAuthor" class="form-label">Author</label>
+            <input type="text" class="form-control" id="editBookAuthor">
+          </div>
+          <div class="mb-3">
+            <label for="editBookDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="editBookDescription"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="editBookImage" class="form-label">Book Image</label>
+            <input type="file" class="form-control" id="editBookImage">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="updateBook()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Function to logout
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("username");
+      localStorage.removeItem("userType");
+      window.location.href = 'index.html';
+    }
+
+    // Function to show add member modal
+    function showAddMemberModal() {
+      var addMemberModal = new bootstrap.Modal(document.getElementById('addMemberModal'));
+      addMemberModal.show();
+    }
+
+    // Function to add new member
+    function addMember() {
+      var username = document.getElementById('newMemberUsername').value;
+      var password = document.getElementById('newMemberPassword').value;
+      var registeredUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+
+      registeredUsers.push({ username: username, password: password });
+      localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
+
+      alert("Member added successfully!");
+      location.reload();
+    }
+
+    // Function to show edit member modal
+    function showEditMemberModal(index) {
+      var editMemberModal = new bootstrap.Modal(document.getElementById('editMemberModal'));
+      var registeredUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+      document.getElementById('editMemberUsername').value = registeredUsers[index].username;
+      document.getElementById('editMemberPassword').value = registeredUsers[index].password;
+      document.getElementById('editMemberModal').dataset.index = index;
+      editMemberModal.show();
+    }
+
+    // Function to update member
+    function updateMember() {
+      var index = document.getElementById('editMemberModal').dataset.index;
+      var registeredUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+      registeredUsers[index].username = document.getElementById('editMemberUsername').value;
+      registeredUsers[index].password = document.getElementById('editMemberPassword').value;
+      localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
+      alert("Member updated successfully!");
+      location.reload();
+    }
+
+    // Function to show add book modal
+    function showAddBookModal() {
+      var addBookModal = new bootstrap.Modal(document.getElementById('addBookModal'));
+      addBookModal.show();
+    }
+
+    // Function to add new book
+    function addBook() {
+      var title = document.getElementById('newBookTitle').value;
+      var author = document.getElementById('newBookAuthor').value;
+      var description = document.getElementById('newBookDescription').value;
+      var imageFile = document.getElementById('newBookImage').files[0];
+      var books = JSON.parse(localStorage.getItem("books")) || [];
+
+      // Read the image file and convert it to base64
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        var base64Image = reader.result;
+        books.push({ title: title, author: author, description: description, image: base64Image });
+        localStorage.setItem("books", JSON.stringify(books));
+        alert("Book added successfully!");
+        location.reload();
+      };
+      reader.readAsDataURL(imageFile);
+    }
+
+    // Function to show edit book modal
+    function showEditBookModal(index) {
+      var editBookModal = new bootstrap.Modal(document.getElementById('editBookModal'));
+      var books = JSON.parse(localStorage.getItem("books")) || [];
+      document.getElementById('editBookTitle').value = books[index].title;
+      document.getElementById('editBookAuthor').value = books[index].author;
+      document.getElementById('editBookDescription').value = books[index].description;
+      document.getElementById('editBookModal').dataset.index = index;
+      editBookModal.show();
+    }
+
+    // Function to update book
+    function updateBook() {
+      var index = document.getElementById('editBookModal').dataset.index;
+      var books = JSON.parse(localStorage.getItem("books")) || [];
+      books[index].title = document.getElementById('editBookTitle').value;
+      books[index].author = document.getElementById('editBookAuthor').value;
+      books[index].description = document.getElementById('editBookDescription').value;
+
+      var imageFile = document.getElementById('editBookImage').files[0];
+      if (imageFile) {
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          var base64Image = reader.result;
+          books[index].image = base64Image;
+          localStorage.setItem("books", JSON.stringify(books));
+          alert("Book updated successfully!");
+          location.reload();
+        };
+        reader.readAsDataURL(imageFile);
+      } else {
+        localStorage.setItem("books", JSON.stringify(books));
+        alert("Book updated successfully!");
+        location.reload();
+      }
+    }
+
+    // Function to delete member
+    function deleteMember(index) {
+      var registeredUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+      registeredUsers.splice(index, 1);
+      localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
+      loadData();
+    }
+
+    // Function to delete book
+    function deleteBook(index) {
+      var books = JSON.parse(localStorage.getItem("books")) || [];
+      books.splice(index, 1);
+      localStorage.setItem("books", JSON.stringify(books));
+      loadData();
+    }
+
+    // Function to load data
+    function loadData() {
+      var registeredUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+      var membersTableBody = document.getElementById('membersTableBody');
+      membersTableBody.innerHTML = '';
+      registeredUsers.forEach(function (user, index) {
+        var row = `<tr>
+          <td>${index + 1}</td>
+          <td>${user.username}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" onclick="showEditMemberModal(${index})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteMember(${index})">Delete</button>
+          </td>
+        </tr>`;
+        membersTableBody.innerHTML += row;
+      });
+
+      var books = JSON.parse(localStorage.getItem("books")) || [];
+      var booksTableBody = document.getElementById('booksTableBody');
+      booksTableBody.innerHTML = '';
+      books.forEach(function (book, index) {
+        var row = `<tr>
+          <td>${index + 1}</td>
+          <td>${book.title}</td>
+          <td>${book.author}</td>
+          <td>${book.description}</td>
+          <td><img src="${book.image}" alt="${book.title}" style="width: 50px; height: auto;"></td>
+          <td>
+            <button class="btn btn-warning btn-sm" onclick="showEditBookModal(${index})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteBook(${index})">Delete</button>
+          </td>
+        </tr>`;
+        booksTableBody.innerHTML += row;
+      });
+    }
+
+    // Call loadData to load data when page loads
+    window.onload = loadData;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

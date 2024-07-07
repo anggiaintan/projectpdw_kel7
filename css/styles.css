@@ -1,0 +1,126 @@
+body {
+    background-color:white;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  /* Title */
+  #judul {
+    font-size: 32px;
+    text-align: center;
+    background-color:antiquewhite;
+    padding: 20px 0;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+  }
+  
+  /* Subtitle */
+  .subtitle {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Header */
+  header {
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Header h1 */
+  header h1 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    color: #333;
+  }
+  
+  /* Header p */
+  header p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #666;
+  }
+  
+  /* List */
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* List items */
+  li {
+    margin-bottom: 20px;
+  }
+  
+  /* List item links */
+  li a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  li a:hover {
+    color:white;
+  }
+  
+  /* Product image */
+  img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+  
+  /* Product name */
+  h3 {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Product description */
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Contact section */
+  .contact {
+    background-color:white;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+  }
+  
+  /* Media Query */
+  @media screen and (max-width: 768px) {
+    header h1 {
+      font-size: 36px;
+    }
+    
+    header p {
+      font-size: 14px;
+    }
+  
+    .subtitle {
+      font-size: 16px;
+    }
+  
+    .contact {
+      padding: 20px 10px;
+    }
+  }
+  

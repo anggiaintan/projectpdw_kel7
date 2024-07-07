@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+    <script>
+        // Function to handle logout
+        function handleLogout() {
+            // Clear session data or any authentication tokens
+            sessionStorage.clear(); // Example for clearing session storage
+            localStorage.clear(); // Example for clearing local storage (if needed)
+
+            // Redirect to login page
+            window.location.href = 'index.html';
+        }
+
+        // Execute the logout function when the page loads
+        window.onload = handleLogout;
+    </script>
+</head>
+<body>
+    <p>Logging out...</p>
+</body>
+</html>
